@@ -1,4 +1,5 @@
 const menu = document.querySelector('.menu')
+const container = document.querySelector('.message-container')
 const openMenu = document.querySelector('.open-menu')
 const closeMenu = document.querySelector('.close-menu')
 const input = document.querySelector('input')
@@ -34,6 +35,17 @@ form.addEventListener('submit', (e) => {
       .then((res) => res.json())
       .then((data) => {
         console.log(`Your short code is: ${data.result.full_short_link}`)
+        let result = data.result.full_short_link
+        let message = document.createElement('div')
+        let theInput = document.createElement('div')
+        let theresult = document.createElement('div')
+        let copy = document.createElement('div')
+        message.append(theInput, theresult, copy)
+        message.classList.add('message', 'flex')
+        theresult.innerHTML = `  ${result}`
+        theInput.innerHTML = `  ${inputVal}`
+        copy.innerHTML = `copy`
+        container.insertBefore(message, container.children[0])
       })
       .catch((err) => {
         console.log(err)
