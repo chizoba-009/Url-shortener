@@ -41,3 +41,56 @@ form.addEventListener('submit', (e) => {
     input.value = ''
   }
 })
+
+// animate on scroll
+function scrollTrigger(selector, options = {}) {
+  let els = document.querySelectorAll(selector)
+  els = Array.from(els)
+  els.forEach((el) => {
+    addObserver(el, options)
+  })
+}
+function addObserver(el, options) {
+  // Check if `IntersectionObserver` is supported
+  if (!('IntersectionObserver' in window)) {
+    // Simple fallback
+    // The animation/callback will be called immediately so
+    // the scroll animation doesn't happen on unsupported browsers
+    if (options.cb) {
+      options.cb(el)
+    } else {
+      entry.target.classList.add('animate__animated')
+    }
+    // We don't need to execute the rest of the code
+    return
+  }
+  let observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        if (options.cb) {
+          options.cb(el)
+        } else {
+          entry.target.classList.add('animate__animated')
+        }
+        observer.unobserve(entry.target)
+      }
+    })
+  }, options)
+  observer.observe(el)
+}
+// Example usages:
+scrollTrigger('.animate__fadeInUp', {
+  rootMargin: '-300px',
+})
+scrollTrigger('.animate__bounceInLeft', {
+  rootMargin: '-200px',
+})
+// scrollTrigger('.loader', {
+//   rootMargin: '-200px',
+//   cb: function(el){
+//     el.innerText = 'Loading...'
+//     setTimeout(() => {
+//       el.innerText = 'Task Complete!'
+//     }, 1000)
+//   }
+// })

@@ -27,6 +27,7 @@
 /* General styles */
 body {
   margin: 0;
+  padding: 0;
   font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 18px;
   position: relative;
@@ -324,6 +325,7 @@ h1 {
 }
 .attribution a {
   color: var(--Cyan);
+  display: inline-block;
 }
 
 /* Hover */
