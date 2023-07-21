@@ -80,12 +80,13 @@ section,
 }
 
 .flex {
-  display: flex;
   align-items: center;
 }
 
 /* links */
 .message {
+  display: flex;
+
   background-color: var(--White);
   padding: 1rem;
   margin-bottom: 0.5rem;
