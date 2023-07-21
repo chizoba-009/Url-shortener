@@ -80,6 +80,7 @@ section,
 }
 
 .flex {
+  display: flex;
   align-items: center;
 }
 
@@ -89,7 +90,8 @@ section,
   padding: 1rem;
   margin-bottom: 0.5rem;
   border-radius: 0.25rem;
-  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
   justify-content: space-between;
   font-size: 1rem;
   font-weight: 400;
@@ -442,6 +444,10 @@ ul.nav {
 /* Media query */
 
 @media (min-width: 768px) {
+  .message {
+    flex-direction: row;
+  }
+
   header ul.flex {
     display: flex !important;
     flex: 1;
