@@ -67,14 +67,15 @@ form.addEventListener('submit', (e) => {
   // copy text to clipboard
   function copyText() {
     var text = document.querySelector('.short-url').innerHTML
-    navigator.clipboard.writeText(text).then(
-      function () {
-        log('Async: Copying to clipboard was successful!')
-      },
-      function (err) {
-        error('Async: Could not copy text: ', err)
-      }
-    )
+    navigator.clipboard.writeText(text)
+    // .then(
+    //   function () {
+    //     console.log('Async: Copying to clipboard was successful!')
+    //   },
+    //   function (err) {
+    //     console.error('Async: Could not copy text: ', err)
+    //   }
+    // )
 
     copy.innerHTML = 'copied'
     copy.style.backgroundColor = 'hsl(257, 27%, 26%)'
