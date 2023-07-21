@@ -25,32 +25,61 @@ closeMenu.addEventListener('click', () => {
 // form
 form.addEventListener('submit', (e) => {
   e.preventDefault()
+  let copy = document.createElement('a')
 
   let inputVal = input.value
   if (!inputVal) {
     input.classList.add('error')
-    console.log('No input')
+    setTimeout("alert('No url detected')", 250)
+    //
   } else {
     fetch(`https://api.shrtco.de/v2/shorten?url=${inputVal}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(`Your short code is: ${data.result.full_short_link}`)
-        let result = data.result.full_short_link
-        let message = document.createElement('div')
-        let theInput = document.createElement('div')
-        let theresult = document.createElement('div')
-        let copy = document.createElement('div')
-        message.append(theInput, theresult, copy)
-        message.classList.add('message', 'flex')
-        theresult.innerHTML = `  ${result}`
-        theInput.innerHTML = `  ${inputVal}`
-        copy.innerHTML = `copy`
-        container.insertBefore(message, container.children[0])
+        displayLinks(data)
       })
       .catch((err) => {
         console.log(err)
       })
     input.value = ''
+    input.classList.remove('error')
+  }
+
+  // display links
+  function displayLinks(data) {
+    let shortLink = data.result.full_short_link
+    let output = document.createElement('div')
+    let initialInput = document.createElement('a')
+    let theResult = document.createElement('a')
+    initialInput.href = inputVal
+    theResult.href = shortLink
+    theResult.classList.add('short-url', 'btn')
+    output.classList.add('message', 'flex')
+    copy.classList.add('copy', 'btn', 'btn-colored')
+    copy.addEventListener('click', copyText)
+    output.append(initialInput, theResult, copy)
+    theResult.innerHTML = `  ${shortLink}`
+    initialInput.innerHTML = `  ${inputVal}`
+    copy.innerHTML = `copy`
+    container.insertBefore(output, container.children[0])
+  }
+
+  // copy text to clipboard
+  function copyText() {
+    var text = document.querySelector('.short-url').innerHTML
+    navigator.clipboard.writeText(text).then(
+      function () {
+        log('Async: Copying to clipboard was successful!')
+      },
+      function (err) {
+        error('Async: Could not copy text: ', err)
+      }
+    )
+
+    copy.innerHTML = 'copied'
+    copy.style.backgroundColor = 'hsl(257, 27%, 26%)'
+
+    // toLocal()
   }
 })
 
@@ -97,12 +126,8 @@ scrollTrigger('.animate__fadeInUp', {
 scrollTrigger('.animate__bounceInLeft', {
   rootMargin: '-200px',
 })
-// scrollTrigger('.loader', {
-//   rootMargin: '-200px',
-//   cb: function(el){
-//     el.innerText = 'Loading...'
-//     setTimeout(() => {
-//       el.innerText = 'Task Complete!'
-//     }, 1000)
-//   }
-// })
+
+// local storage
+// function toLocal(){
+
+// }

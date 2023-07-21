@@ -75,12 +75,12 @@ section,
   padding: 6rem 0;
 }
 
-.ac {
-  align-items: center;
-}
-
 .js {
   justify-content: space-between;
+}
+
+.flex {
+  align-items: center;
 }
 
 /* links */
@@ -91,10 +91,20 @@ section,
   border-radius: 0.25rem;
   display: flex;
   justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
-.message div:nth-child(2) {
+.message a:nth-child(2) {
   color: var(--Cyan);
+  padding-right: 1rem;
+  font-weight: 400;
+}
+.message a:nth-child(1) {
+  color: var(--Dark-Violet);
+}
+.message a:nth-child(3) {
+  cursor: pointer;
 }
 
 .btn {
@@ -194,8 +204,14 @@ h1 {
 .input {
   border-radius: 0.4rem;
   padding: 0.8rem;
-  border: none;
+  border: 2px solid transparent;
+  outline: 0;
   width: 100%;
+}
+
+.input:focus {
+  border: 2px solid var(--Cyan);
+  outline: 0;
 }
 
 .cta .btn {
@@ -450,7 +466,7 @@ ul.nav {
   .hero .image {
     grid-area: auto;
     padding: 0;
-    right: -35rem;
+    right: -9rem;
     top: 7rem;
   }
 
