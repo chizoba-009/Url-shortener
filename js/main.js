@@ -1,5 +1,6 @@
 const menu = document.querySelector('.menu')
-const container = document.querySelector('.message-container')
+const body = document.querySelector('body')
+const container = document.querySelector('.main-links')
 const openMenu = document.querySelector('.open-menu')
 const closeMenu = document.querySelector('.close-menu')
 const input = document.querySelector('input')
@@ -23,15 +24,15 @@ closeMenu.addEventListener('click', () => {
 })
 
 // form
+let messageContainer = document.createElement('div')
 form.addEventListener('submit', (e) => {
   e.preventDefault()
-  let copy = document.createElement('a')
+  let copyUrl = document.createElement('a')
 
   let inputVal = input.value
   if (!inputVal) {
     input.classList.add('error')
     setTimeout("alert('No url detected')", 250)
-    //
   } else {
     fetch(`https://api.shrtco.de/v2/shorten?url=${inputVal}`)
       .then((res) => res.json())
@@ -48,87 +49,43 @@ form.addEventListener('submit', (e) => {
   // display links
   function displayLinks(data) {
     let shortLink = data.result.full_short_link
-    let output = document.createElement('div')
-    let initialInput = document.createElement('a')
-    let theResult = document.createElement('a')
-    initialInput.href = inputVal
-    theResult.href = shortLink
-    theResult.classList.add('short-url', 'btn')
-    output.classList.add('message', 'flex')
-    copy.classList.add('copy', 'btn', 'btn-colored')
-    copy.addEventListener('click', copyText)
-    output.append(initialInput, theResult, copy)
-    theResult.innerHTML = `  ${shortLink}`
-    initialInput.innerHTML = `  ${inputVal}`
-    copy.innerHTML = `copy`
-    container.insertBefore(output, container.children[0])
+    let message = document.createElement('div')
+    let initialUrl = document.createElement('a')
+    let shortUrl = document.createElement('a')
+    initialUrl.href = inputVal
+    shortUrl.href = shortLink
+    shortUrl.classList.add('short-url', 'btn')
+    initialUrl.classList.add('btn')
+    messageContainer.classList.add('messageContainer')
+    message.classList.add('message', 'flex')
+    copyUrl.classList.add('copy', 'btn', 'btn-colored')
+    shortUrl.innerHTML = `  ${shortLink}`
+    initialUrl.innerHTML = `  ${inputVal}`
+    copyUrl.innerHTML = `copy`
+    message.append(initialUrl, shortUrl, copyUrl)
+    messageContainer.appendChild(message)
+    container.insertBefore(messageContainer, container.children[0])
   }
-
+  copyUrl.addEventListener('click', copyLink)
+  let messageArray = localStorage.getItem('message') ? localStorage.getItem('message') : []
+  console.log(localStorage.getItem('message'))
   // copy text to clipboard
-  function copyText() {
-    var text = document.querySelector('.short-url').innerHTML
-    navigator.clipboard.writeText(text)
-    // .then(
-    //   function () {
-    //     console.log('Async: Copying to clipboard was successful!')
-    //   },
-    //   function (err) {
-    //     console.error('Async: Could not copy text: ', err)
-    //   }
-    // )
+  function copyLink() {
+    copyUrl.innerHTML = 'copied'
+    copyUrl.style.backgroundColor = 'hsl(257, 27%, 26%)'
+    const link = copyUrl.previousElementSibling.innerHTML
+    navigator.clipboard.writeText(link)
 
-    copy.innerHTML = 'copied'
-    copy.style.backgroundColor = 'hsl(257, 27%, 26%)'
-
-    // toLocal()
+    messageArray += messageContainer.outerHTML
+    localStorage.setItem('message', messageArray)
   }
 })
 
-// animate on scroll
-function scrollTrigger(selector, options = {}) {
-  let els = document.querySelectorAll(selector)
-  els = Array.from(els)
-  els.forEach((el) => {
-    addObserver(el, options)
-  })
-}
-function addObserver(el, options) {
-  // Check if `IntersectionObserver` is supported
-  if (!('IntersectionObserver' in window)) {
-    // Simple fallback
-    // The animation/callback will be called immediately so
-    // the scroll animation doesn't happen on unsupported browsers
-    if (options.cb) {
-      options.cb(el)
-    } else {
-      entry.target.classList.add('animate__animated')
-    }
-    // We don't need to execute the rest of the code
-    return
+document.addEventListener('DOMContentLoaded', () => {
+  // local storage
+  let storedMessage = localStorage.getItem('message')
+  if (localStorage.getItem('message')) {
+    console.log('local storage found')
+    document.getElementById('showLinks').innerHTML = storedMessage
   }
-  let observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        if (options.cb) {
-          options.cb(el)
-        } else {
-          entry.target.classList.add('animate__animated')
-        }
-        observer.unobserve(entry.target)
-      }
-    })
-  }, options)
-  observer.observe(el)
-}
-// Example usages:
-scrollTrigger('.animate__fadeInUp', {
-  rootMargin: '-300px',
 })
-scrollTrigger('.animate__bounceInLeft', {
-  rootMargin: '-200px',
-})
-
-// local storage
-// function toLocal(){
-
-// }

@@ -86,16 +86,18 @@ section,
 /* links */
 .message {
   display: flex;
-
   background-color: var(--White);
   padding: 1rem;
   margin-bottom: 0.5rem;
   border-radius: 0.25rem;
   flex-direction: column;
-  margin-top: 2rem;
   justify-content: space-between;
   font-size: 1rem;
   font-weight: 400;
+}
+
+.messageContainer {
+  margin-bottom: 3rem;
 }
 
 .message a:nth-child(2) {

@@ -64,19 +64,6 @@ function copyText() {
     }
   )
 }
-
-let observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      if (options.cb) {
-        options.cb(el)
-      } else {
-        entry.target.classList.add('animate__animated')
-      }
-      observer.unobserve(entry.target)
-    }
-  })
-}, options)
 ```
 
 ### Continued development
