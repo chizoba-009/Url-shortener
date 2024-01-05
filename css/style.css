@@ -98,6 +98,7 @@ section,
 
 .messageContainer {
   margin-bottom: 3rem;
+  margin-top: 1rem;
 }
 
 .message a:nth-child(2) {
